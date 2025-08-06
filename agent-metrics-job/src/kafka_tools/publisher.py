@@ -26,7 +26,7 @@ def connect_to_kafka(bootstrap_servers: str, number_of_retries: int):
 
 def publish_event(producer, kafka_topic: str, event, metrics_published_success, metrics_published_error) -> None:
     try:
-        logging.info(f"sending metric from agent {event['agent_id']}")
+        logging.info(f"sending metric for {event['pod']}")
         producer.produce(kafka_topic, value=json.dumps(event).encode("utf-8"))
         producer.flush()
         logging.info("metric event sent to kafka topic")
