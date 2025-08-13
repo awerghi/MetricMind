@@ -1,6 +1,5 @@
 import os
 import time
-import threading
 
 
 from prometheus_client import CollectorRegistry, push_to_gateway
@@ -12,7 +11,7 @@ from conf.settings import app_settings
 
 
 registry = CollectorRegistry()
-bootstrap_servers = os.getenv("KAFKA_BOOTSTRAP_SERVERS","localhost:9092")
+bootstrap_servers = os.getenv("KAFKA_BOOTSTRAP_SERVERS","kafka:29092")
 fake_metrics_event_numbers = generated_events(registry)
 metrics_published_success = fake_metrics_published_success(registry)
 metrics_published_error = fake_metrics_published_error(registry)
