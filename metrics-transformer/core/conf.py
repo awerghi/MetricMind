@@ -8,6 +8,6 @@ class Settings(BaseSettings):
     # the name of the topic where we are going to send critical metrics to
     CRITICAL_METRICS_TO_HANDLE_TOPIC : str = "agent-metrics-critical-prod"
     # The value from where the metric is considered critical and should be handled
-    METRICS_THRESHOLD : int = 7
+    METRICS_THRESHOLD : int = 3
 
 settings = Settings()
