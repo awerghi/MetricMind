@@ -11,7 +11,7 @@ from models import CriticalMetricEvents
 def build_prompt(prompt_operation,events,additional_prompt):
     return  f"{prompt_operation} {events} {additional_prompt}"
 
-llm = ChatMistralAI(api_key="", model=settings.Model_Version)
+llm = ChatMistralAI(api_key="0duZNLlhN8OO5VF52jGZrHZbb5sbLCut", model=settings.Model_Version)
 
 def prompt_llm_with_retry(db,events,prompt_operation,additional_prompt,number_of_retries):
     prompt = build_prompt(prompt_operation,events,additional_prompt)

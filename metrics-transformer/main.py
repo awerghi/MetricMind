@@ -27,7 +27,7 @@ def pipeline (app):
         filtered_sdf.to_topic(priority_metrics)
 
     except Exception as e:
-        logger.info(f"Cannot dispatch events from {settings.METRICS_TOPIC} to {settings.CRITICAL_METRICS_TO_HANDLE_TOPIC} due to {e}")
+        logger.error(f"Cannot dispatch events from {settings.METRICS_TOPIC} to {settings.CRITICAL_METRICS_TO_HANDLE_TOPIC} due to {e}")
 
 if __name__ == "__main__":
     pipeline(app)

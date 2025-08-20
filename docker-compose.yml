@@ -36,20 +36,6 @@ services:
     networks:
       - metrics-net
 
-  metrics-publisher-app:
-    build: .
-    depends_on:
-      - kafka
-      - pushgateway
-      - filebeat
-    networks:
-      - metrics-net
-    volumes:
-      - ./logs:/app/src/logs
-    environment:
-      KAFKA_BOOTSTRAP_SERVERS : kafka:29092
-
-
   prometheus:
     image: prom/prometheus
     container_name: prometheus
@@ -106,8 +92,61 @@ services:
     networks:
       - metrics-net
 
+  timescaledb:
+    image: timescale/timescaledb:latest-pg17
+    container_name: timescaledb
+    ports:
+      - "5432:5432"
+    networks:
+      - metrics-net
+    environment:
+      POSTGRES_PASSWORD: timescaledb
+      POSTGRES_DB: alerts_db
+      POSTGRES_USER: timescaledb
+
+    volumes:
+      - timescale_data:/var/lib/postgresql/data
+    restart: always
+
+  metrics-publisher-app:
+    build: ./agent-metrics-job
+    depends_on:
+      - kafka
+      - pushgateway
+      - filebeat
+    networks:
+      - metrics-net
+    volumes:
+      - ./logs:/app/src/logs
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+
+  metrics-transformer:
+    build: ./metrics-transformer
+    depends_on:
+      - metrics-publisher-app
+    networks:
+      - metrics-net
+    volumes:
+      - ./logs:/app/logs
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+
+  llm-pipe:
+    build: ./llm-pipe
+    networks:
+      - metrics-net
+    depends_on:
+      - metrics-transformer
+    volumes:
+      - ./logs:/app/logs
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS : kafka:29092
 
 
 networks:
   metrics-net :
     external: true
+
+volumes:
+  timescale_data:

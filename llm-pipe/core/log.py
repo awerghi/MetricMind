@@ -1,11 +1,19 @@
 import logging
+from pathlib import Path
 
-logging.basicConfig(
-    level=logging.INFO,
-    format= '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers= [
-        logging.StreamHandler()
-    ]
-)
+LOG_DIR = Path(__file__).parent.parent / "logs"
+LOG_DIR.mkdir(exist_ok=True)
 
-logger = logging.getLogger(__name__)
+def setup_logger():
+    logging.basicConfig(
+        level = logging.INFO,
+        format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        handlers = [
+            logging.FileHandler(LOG_DIR / "llm-pipe-app.log"),
+            logging.StreamHandler()
+        ],
+        force=True
+    )
+    return logging.getLogger(__name__)
+
+logger = setup_logger()

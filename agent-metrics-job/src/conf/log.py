@@ -11,7 +11,7 @@ def setup_logger():
         level = logging.INFO,
         format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         handlers = [
-            logging.FileHandler(LOG_DIR / "app.log"),
+            logging.FileHandler(LOG_DIR / "agent-metrics-publisher.log"),
             logging.StreamHandler()
         ],
         force=True
@@ -20,4 +20,3 @@ def setup_logger():
 
 logger = setup_logger()
 
-logger.info("First log message")  # This triggers file creation
