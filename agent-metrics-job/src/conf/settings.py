@@ -5,7 +5,7 @@ class Settings(BaseSettings):
 
     # Global settings
     JOB_NAME : str = "agent-metrics-job"
-    
+    NUMBER_OF_THREADS : int = 4
 
     # kafka connection retries
     NUMBER_OF_RETRIES : int = 10

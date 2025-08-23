@@ -1,4 +1,5 @@
 import os
+import threading
 import time
 
 
@@ -27,7 +28,15 @@ def pipeline_process():
         push_to_gateway("pushgateway:9091",job=app_settings.JOB_NAME,registry=registry)
         time.sleep(10)
 
-pipeline_process()
+threads = []
+for i in range(app_settings.NUMBER_OF_THREADS):
+    th = threading.Thread(target=pipeline_process)
+    threads.append(th)
+    th.start()
+
+for th in threads:
+    th.join()
+
 
 
 
